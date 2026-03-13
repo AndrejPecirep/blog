@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: 'localhost',
-    port: 5173, // default Vite port (možeš promijeniti ako želiš)
+    port: 5173, // default Vite port
     proxy: {
       '/api': {
         target: 'http://localhost:5000', // Backend API (Express server)

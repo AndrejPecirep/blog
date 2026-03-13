@@ -1,12 +1,10 @@
 import React from 'react';
 
-const Loader = () => {
+export default function Loader({ label = 'Loading...' }) {
   return (
     <div className="loader-wrapper">
-      <div className="loader"></div>
-      <p>Loading...</p>
+      <div className="loader" />
+      <p>{label}</p>
     </div>
   );
-};
-
-export default Loader;
+}

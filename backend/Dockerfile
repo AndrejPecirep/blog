@@ -16,5 +16,5 @@ COPY . .
 # Expose port koji backend koristi (mora odgovarati .env PORT)
 EXPOSE 5000
 
-# Pokrećemo backend
+# Start the backend
 CMD ["npm", "run", "dev"]

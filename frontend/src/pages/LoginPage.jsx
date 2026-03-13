@@ -1,67 +1,41 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import apiClient from '../apiClient';
 import { useAuth } from '../context/AuthContext';
 
-const LoginPage = () => {
+export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || 'Login failed');
-        return;
-      }
-
+      const { data } = await apiClient.post('/auth/login', form);
       login(data.user, data.token);
-      navigate('/profile'); // ide direkt na profil
+      navigate('/profile');
     } catch (err) {
-      console.error(err);
-      setError('Something went wrong');
+      setError(err.response?.data?.message || 'Login failed.');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit} className="auth-form">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <section className="auth-shell">
+      <div className="auth-card">
+        <span className="eyebrow">Welcome Back</span>
+        <h1>Sign in to your account</h1>
+        <p>Managing your blog is now simple, clear, and professional.</p>
+        {error && <div className="alert-error">{error}</div>}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+          <input type="password" placeholder="Password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+          <button className="button button-primary" type="submit">Sign In</button>
+        </form>
+        <p>Don't have an account? <Link to="/register">Create a profile</Link></p>
+      </div>
+    </section>
   );
-};
-
-export default LoginPage;
+}

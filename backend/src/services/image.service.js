@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Spremanje slike na lokalni disk
+// Save image to local disk
 exports.saveImage = (file) => {
   if (!file) return null;
 

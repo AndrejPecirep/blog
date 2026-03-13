@@ -1,10 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import apiClient from '../apiClient';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [bootstrapped, setBootstrapped] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -14,13 +16,14 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
     }
+    setBootstrapped(true);
   }, []);
 
-  const login = (userData, token) => {
+  const login = (userData, authToken) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', authToken);
     setUser(userData);
-    setToken(token);
+    setToken(authToken);
   };
 
   const logout = () => {
@@ -30,11 +33,20 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const refreshProfile = async () => {
+    if (!token) return null;
+    const { data } = await apiClient.get('/auth/me');
+    setUser(data.user);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    return data.user;
+  };
+
+  const value = useMemo(
+    () => ({ user, token, isAuthenticated: Boolean(user && token), bootstrapped, login, logout, refreshProfile }),
+    [user, token, bootstrapped]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

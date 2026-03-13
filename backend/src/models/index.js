@@ -5,7 +5,7 @@ const sequelize = require(path.join(__dirname, '../../database'));
 
 const db = {};
 
-// Učitavanje modela
+// Load models
 db.User = require('./user.model')(sequelize, DataTypes);
 db.Post = require('./post.model')(sequelize, DataTypes);
 db.Comment = require('./comment.model')(sequelize, DataTypes);

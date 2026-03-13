@@ -8,7 +8,7 @@ function slugify(text) {
     .toLowerCase()
     .trim()
     .replace(/[\s\W-]+/g, '-') // zamijeni razmake i specijalne znakove sa "-"
-    .replace(/^-+|-+$/g, ''); // ukloni "-" na početku i kraju
+    .replace(/^-+|-+$/g, ''); // remove "-" from the beginning and end
 }
 
 module.exports = slugify;

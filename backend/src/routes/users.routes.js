@@ -11,7 +11,7 @@ const { authMiddleware } = require('../middlewares/auth.middleware');
 // 🔐 Sve rute ispod zahtijevaju login
 router.use(authMiddleware);
 
-// 👤 Ažuriraj vlastiti profil
+// Update own profile
 router.put('/me', updateProfile);
 
 // 👤 Dohvati korisnika po ID-u

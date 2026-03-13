@@ -1,41 +1,41 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
 
   return (
-    <nav className="navbar fade-in">
-      <Link to="/" className="nav-logo">MyBlog</Link>
+    <header className="site-header">
+      <div className="container nav-shell">
+        <Link to="/" className="brand-mark">
+          <span className="brand-badge">B</span>
+          <span>
+            <strong>BlogStudio</strong>
+            <small>modern publishing platform</small>
+          </span>
+        </Link>
 
-      <div className="flex gap-4">
-        {user ? (
-          <>
-            <Link to="/profile" className="nav-link">
-              {user.username}
-            </Link>
+        <nav className="nav-links">
+          <NavLink to="/">Home</NavLink>
+          {isAuthenticated && <NavLink to="/create">New Post</NavLink>}
+          {isAuthenticated && <NavLink to="/profile">Profile</NavLink>}
+        </nav>
 
-            {/* ✅ ISPRAVLJENA RUTA */}
-            <Link to="/create" className="nav-link">
-              Create Post
-            </Link>
-
-            <button onClick={logout} className="nav-btn-logout">
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="nav-link">
-              Login
-            </Link>
-            <Link to="/register" className="nav-btn-primary">
-              Register
-            </Link>
-          </>
-        )}
+        <div className="nav-actions">
+          {isAuthenticated ? (
+            <>
+              <div className="user-chip">{user?.username}</div>
+              <button onClick={logout} className="button button-secondary">Logout</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="button button-ghost">Login</Link>
+              <Link to="/register" className="button button-primary">Register</Link>
+            </>
+          )}
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }

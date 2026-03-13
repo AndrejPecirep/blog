@@ -1,30 +1,17 @@
 import React from 'react';
 
-const Pagination = ({ page, totalPages, onPageChange }) => {
+export default function Pagination({ page, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
-
-  const pages = [];
-  for (let i = 1; i <= totalPages; i++) pages.push(i);
 
   return (
     <div className="pagination">
-      {pages.map(p => (
-        <button
-          key={p}
-          className={p === page ? 'active' : ''}
-          onClick={() => onPageChange(p)}
-        >
-          {p}
-        </button>
-      ))}
+      <button disabled={page === 1} onClick={() => onPageChange(page - 1)}>
+        Previous
+      </button>
+      <span>Page {page} / {totalPages}</span>
+      <button disabled={page === totalPages} onClick={() => onPageChange(page + 1)}>
+        Next
+      </button>
     </div>
   );
-};
-
-Pagination.defaultProps = {
-  page: 1,
-  totalPages: 1,
-  onPageChange: () => {}
-};
-
-export default Pagination;
+}

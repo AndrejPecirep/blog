@@ -8,10 +8,10 @@ const {
 } = require('../controllers/comments.controller');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
-// Dohvat svih komentara za određeni post (nije potrebna autentifikacija)
+// Get all comments for a specific post (no authentication required)
 router.get('/post/:postId', getCommentsByPost);
 
-// Kreiranje, update i brisanje komentara zahtijevaju autentifikaciju
+// Creating, updating, and deleting comments requires authentication
 router.post('/', authMiddleware, createComment);
 router.put('/:id', authMiddleware, updateComment);
 router.delete('/:id', authMiddleware, deleteComment);

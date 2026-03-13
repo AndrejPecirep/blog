@@ -1,6 +1,6 @@
 const { Comment, Post, User } = require('../models');
 
-// ➕ Kreiranje komentara
+// Create comment
 exports.createComment = async (req, res, next) => {
   try {
     const { postId, content } = req.body;
@@ -36,7 +36,7 @@ exports.createComment = async (req, res, next) => {
   }
 };
 
-// 📥 Dohvat komentara za post
+// Get comments for a post
 exports.getCommentsByPost = async (req, res, next) => {
   try {
     const comments = await Comment.findAll({
@@ -57,7 +57,7 @@ exports.getCommentsByPost = async (req, res, next) => {
   }
 };
 
-// ✏️ Update komentara (autor)
+// Update comment (author)
 exports.updateComment = async (req, res, next) => {
   try {
     const comment = await Comment.findByPk(req.params.id);
@@ -78,7 +78,7 @@ exports.updateComment = async (req, res, next) => {
   }
 };
 
-// 🗑 Brisanje komentara (autor ili admin)
+// Delete comment (author or admin)
 exports.deleteComment = async (req, res, next) => {
   try {
     const comment = await Comment.findByPk(req.params.id);

@@ -1,11 +1,10 @@
 const bcrypt = require('bcryptjs');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 
-// 🔐 Dohvati sve korisnike (ADMIN)
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'email', 'username', 'bio', 'avatarUrl', 'role']
+      attributes: ['id', 'email', 'username', 'bio', 'avatarUrl', 'role', 'createdAt']
     });
     res.json({ users });
   } catch (err) {
@@ -13,11 +12,11 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-// 👤 Dohvati korisnika po ID-u
 exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id, {
-      attributes: ['id', 'email', 'username', 'bio', 'avatarUrl', 'role']
+      attributes: ['id', 'email', 'username', 'bio', 'avatarUrl', 'role', 'createdAt'],
+      include: [{ model: Post, attributes: ['id', 'title', 'slug', 'createdAt'] }]
     });
 
     if (!user) {
@@ -30,7 +29,6 @@ exports.getUserById = async (req, res, next) => {
   }
 };
 
-// ✏️ Ažuriranje vlastitog profila
 exports.updateProfile = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.user.id);
@@ -40,12 +38,11 @@ exports.updateProfile = async (req, res, next) => {
 
     const { username, bio, avatarUrl, password } = req.body;
 
-    if (username) user.username = username;
+    if (username?.trim()) user.username = username.trim();
     if (bio !== undefined) user.bio = bio;
     if (avatarUrl !== undefined) user.avatarUrl = avatarUrl;
-
-    if (password) {
-      user.password = await bcrypt.hash(password, 10);
+    if (password?.trim()) {
+      user.password = await bcrypt.hash(password.trim(), 10);
     }
 
     await user.save();
@@ -57,7 +54,8 @@ exports.updateProfile = async (req, res, next) => {
         username: user.username,
         bio: user.bio,
         avatarUrl: user.avatarUrl,
-        role: user.role
+        role: user.role,
+        createdAt: user.createdAt
       }
     });
   } catch (err) {
@@ -65,7 +63,6 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
-// 🗑 Brisanje korisnika (ADMIN)
 exports.deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
