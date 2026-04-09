@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://blog-2-gpkq.onrender.com/api';
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
+  baseURL: API_BASE_URL
 });
 
 apiClient.interceptors.request.use((config) => {

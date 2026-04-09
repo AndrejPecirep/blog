@@ -6,7 +6,7 @@ import Comment from '../components/Comment';
 import { useAuth } from '../context/AuthContext';
 import { formatDate } from '../utils/formatDate';
 
-const uploadsBase = import.meta.env.VITE_UPLOADS_BASE_URL || 'http://localhost:5000';
+const uploadsBase = import.meta.env.VITE_UPLOADS_BASE_URL || 'https://blog-2-gpkq.onrender.com';
 
 export default function PostPage() {
   const { slug } = useParams();

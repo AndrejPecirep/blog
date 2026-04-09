@@ -25,7 +25,7 @@ export default function CreatePostPage() {
             content: post.content,
             tags: post.Tags?.map((tag) => tag.name).join(', ') || ''
           });
-          setPreview(post.imageUrl ? `${import.meta.env.VITE_UPLOADS_BASE_URL || 'http://localhost:5000'}${post.imageUrl}` : '');
+          setPreview(post.imageUrl ? `${import.meta.env.VITE_UPLOADS_BASE_URL || 'https://blog-2-gpkq.onrender.com'}${post.imageUrl}` : '');
         }
       } catch (err) {
         console.error(err);

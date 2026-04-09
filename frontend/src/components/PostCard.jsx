@@ -7,7 +7,7 @@ export default function PostCard({ post }) {
     <article className="post-card">
       <div className="post-card-media">
         {post.imageUrl ? (
-          <img src={`${import.meta.env.VITE_UPLOADS_BASE_URL || 'http://localhost:5000'}${post.imageUrl}`} alt={post.title} />
+          <img src={`${import.meta.env.VITE_UPLOADS_BASE_URL || 'https://blog-2-gpkq.onrender.com'}${post.imageUrl}`} alt={post.title} />
         ) : (
           <div className="post-card-placeholder">Blog</div>
         )}
