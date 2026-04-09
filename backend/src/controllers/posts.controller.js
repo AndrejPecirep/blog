@@ -98,8 +98,8 @@ const getPosts = async (req, res, next) => {
     const where = {};
     if (q) {
       where[Op.or] = [
-        { title: { [Op.like]: `%${q}%` } },
-        { content: { [Op.like]: `%${q}%` } }
+        { title: { [Op.iLike]: `%${q}%` } },
+        { content: { [Op.iLike]: `%${q}%` } }
       ];
     }
     if (authorId) {

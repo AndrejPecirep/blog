@@ -11,7 +11,7 @@ const postRoutes = require('./src/routes/posts.routes');
 const commentRoutes = require('./src/routes/comments.routes');
 
 const app = express();
-const uploadsDir = path.join(__dirname, 'uploads');
+const uploadsDir = process.env.UPLOAD_DIR || path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
